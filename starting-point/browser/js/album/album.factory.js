@@ -41,7 +41,9 @@ juke.factory('AlbumFactory', function ($http, $q, $rootScope) {
 
   albumObj.viewOne = function(album){
     view = album.id;
-    $rootScope.$broadcast("anAlbum", view);
+    if(album.id !== null) {
+      $rootScope.$broadcast("anAlbum", view);
+    }
   }
 
   albumObj.curView = function(){
