@@ -14,7 +14,7 @@ juke.controller('PlayerCtrl', function ($scope, $rootScope, PlayerFactory) {
       PlayerFactory.start(song, trackList);
     }
 
-    $rootScope.$evalAsync();
+    // $rootScope.$evalAsync();
   };
 
 
@@ -34,6 +34,10 @@ juke.controller('PlayerCtrl', function ($scope, $rootScope, PlayerFactory) {
     PlayerFactory.previous();
   }
 
+  $scope.getProgress = function() {
+    return PlayerFactory.getProgress();
+  }
+
   // initialize audio player (note this kind of DOM stuff is odd for Angular)
   // var audio = document.createElement('audio');
   // audio.addEventListener('ended', function () {
@@ -41,11 +45,7 @@ juke.controller('PlayerCtrl', function ($scope, $rootScope, PlayerFactory) {
   //   // $scope.$apply(); // triggers $rootScope.$digest, which hits other scopes
   //   $scope.$evalAsync(); // likely best, schedules digest if none happening
   // });
-  // audio.addEventListener('timeupdate', function () {
-  //    $scope.progress = 100 * PlayerFactory.getProgress();
-  //    // $scope.$digest(); // re-computes current template only (this scope)
-  //    $scope.$evalAsync(); // likely best, schedules digest if none happening
-  // });
+
 
   // state
   // $scope.currentSong;
@@ -87,8 +87,8 @@ juke.controller('PlayerCtrl', function ($scope, $rootScope, PlayerFactory) {
   //   audio.currentTime = audio.duration * decimal;
   // }
 
-  // $scope.handleProgressClick = function (evt) {
-  //   seek(evt.offsetX / evt.currentTarget.scrollWidth);
-  // };
+  $scope.handleProgressClick = function (evt) {
+    PlayerFactory.moveProgress(evt.offsetX / evt.currentTarget.scrollWidth);
+  };
 
 });

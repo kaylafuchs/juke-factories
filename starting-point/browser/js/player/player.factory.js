@@ -1,11 +1,21 @@
 'use strict';
 
-juke.factory('PlayerFactory', function(){
+juke.factory('PlayerFactory', function($rootScope){
 	var audio = document.createElement('audio');
 	audio.addEventListener('ended', function() {
 		tools.next();
 		$rootScope.$evalAsync();
 	})
+
+	var progress = 0;
+	audio.addEventListener('timeupdate', function () {
+		if(audio.duration) {
+	   		progress = 100 * (audio.currentTime / audio.duration);
+	   	}
+	    $rootScope.$evalAsync();
+	});
+
+
 	var currentSong = null;
 	var playing = false;
 	var list = [];
@@ -33,6 +43,8 @@ juke.factory('PlayerFactory', function(){
 		currentSong = list[index];
 		if (playing) tools.start(currentSong);
 	}
+
+
 
 	var tools = {
 		pause: function() {
@@ -76,7 +88,10 @@ juke.factory('PlayerFactory', function(){
 			skip(-1);
 		},
 		getProgress: function() {
-			return audio.duration ? audio.currentTime / audio.duration : 0;
+			return progress;
+		},
+		moveProgress: function(blah) {
+			audio.currentTime = audio.duration * (blah);
 		}
 	}
 

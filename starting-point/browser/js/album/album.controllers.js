@@ -49,7 +49,7 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFac
       PlayerFactory.start(song, trackList);
     }
 
-    $rootScope.$evalAsync();
+    // $rootScope.$evalAsync();
   };
 
 
