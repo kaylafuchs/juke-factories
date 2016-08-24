@@ -1,7 +1,7 @@
 /* global juke */
 'use strict';
 
-juke.controller('ArtistsController', function($scope, $rootScope, ArtistFactory){
+juke.controller('ArtistsCtrl', function($scope, $rootScope, ArtistFactory, AlbumFactory){
 
 	ArtistFactory.fetchAll()
 	.then(function(res){
@@ -15,5 +15,9 @@ juke.controller('ArtistsController', function($scope, $rootScope, ArtistFactory)
 
 	$scope.getCurView = function(){
 		return ArtistFactory.curView() === "allArtists";
+	}
+
+	$scope.viewOneArtist = function(artist) {
+		ArtistFactory.viewOne(artist);
 	}
 })

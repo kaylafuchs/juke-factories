@@ -15,6 +15,7 @@
     <script src="/js/sidebar/sidebar.controller.js" defer></script>
     <script src="/js/artists/artist.factory.js" defer></script>
     <script src="/js/artists/artists.controller.js" defer></script>
+    <script src="/js/artists/artist.controller.js" defer></script>
   </head>
   <body ng-app="juke">
     <div id="main" class="container-fluid">
@@ -81,11 +82,31 @@
             </div>
           </div>
         </div>
-        <div ng-controller="ArtistsController" ng-show="getCurView()">
+        <div ng-controller="ArtistsCtrl" ng-show="getCurView()">
           <h3>Artists</h3>
             <div class="list-group">
               <div class="list-group-item" ng-repeat="artist in artists">
-              <a href="#">{{ artist.name }}</a>
+              <a href="#" ng-click="viewOneArtist(artist)">{{ artist.name }}</a>
+            </div>
+          </div>
+        </div>
+        <div ng-controller="ArtistCtrl" ng-show="getCurView()">
+          <h3>Artists</h3>
+          <div>
+            <h3>{{ artist.name }}</h3>
+          </div>
+            <div class="row">
+              <div class="col-xs-4" ng-repeat="album in artist.albums">
+                <a class="thumbnail" href="#" ng-click="goToAlbum(album)">
+                  <img ng-src="{{ album.imageUrl }}">
+                  <div class="caption">
+                    <h5>
+                      <span>{{ album.name }}</span>
+                    </h5>
+                    <small> Tracks: {{ album.songs.length }} </small>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>

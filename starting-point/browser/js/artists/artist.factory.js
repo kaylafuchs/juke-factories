@@ -1,11 +1,19 @@
 'use strict';
 
-juke.factory('ArtistFactory', function($q, $http, AlbumFactory){
+juke.factory('ArtistFactory', function($q, $http, AlbumFactory, $rootScope){
 	var artistObj = {};
 	var view = null;
 
 	artistObj.fetchAll = function(){
 		return $http.get('/api/artists');
+	}
+
+	artistObj.fetchAlbums = function(id){
+		return $http.get('/api/artists/' + id + '/albums');
+	}
+
+	artistObj.fetchById = function(id) {
+		return $http.get('/api/artists/' + id);
 	}
 
 	artistObj.resetView = function(){
@@ -19,6 +27,9 @@ juke.factory('ArtistFactory', function($q, $http, AlbumFactory){
 
 	artistObj.viewOne = function(artist){
 		view = artist.id;
+		if(artist.id !== null) {
+      		$rootScope.$broadcast("anArtist", view);
+    	}
 	}
 
 	artistObj.curView = function(){
