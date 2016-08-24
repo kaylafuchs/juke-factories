@@ -23,8 +23,9 @@ juke.factory('StatsFactory', function ($q) {
 
 
 
-juke.factory('AlbumFactory', function ($http, $q) {
+juke.factory('AlbumFactory', function ($http, $q, $rootScope) {
   var albumObj = {};
+  var view = "all";
 
   albumObj.fetchAll = function(){
     return $http.get('/api/albums/');
@@ -33,7 +34,20 @@ juke.factory('AlbumFactory', function ($http, $q) {
   albumObj.fetchById = function(id){
     return $http.get('/api/albums/' + id);
   }
-  
+
+  albumObj.viewAll = function(){
+    view = "all";
+  }
+
+  albumObj.viewOne = function(album){
+    view = album.id;
+    $rootScope.$broadcast("anAlbum", view);
+  }
+
+  albumObj.curView = function(){
+    return view;
+  }
+
   return albumObj;
 });
 

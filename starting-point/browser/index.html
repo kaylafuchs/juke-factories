@@ -12,23 +12,24 @@
     <script src="/js/album/albums.controller.js" defer></script>
     <script src="/js/player/player.controller.js" defer></script>
     <script src="/js/player/player.factory.js" defer></script>
+    <script src="/js/sidebar/sidebar.controller.js" defer></script>
   </head>
   <body ng-app="juke">
     <div id="main" class="container-fluid">
 
       <div class="col-xs-2">
-        <sidebar>
+        <sidebar ng-controller="SidebarCtrl">
           <img src="juke.svg" class="logo">
           <section>
             <h4 class="menu-item active">
-              <a href="#">ALBUMS</a>
+              <a href="#" ng-click="viewAlbums()">ALBUMS</a>
             </h4>
           </section>
         </sidebar>
       </div>
 
       <div class="col-xs-10">
-        <div class="album" ng-controller="AlbumCtrl" ng-show="true">
+        <div class="album" ng-controller="AlbumCtrl" ng-show="getCurView()">
           <p>
             <h3>{{ album.name }}</h3>
             <h5>{{ album.duration }}</h5>
@@ -57,11 +58,11 @@
             </tbody>
           </table>
         </div>
-        <div ng-show="false" ng-controller="AlbumsCtrl" ng-show="false">
+        <div ng-controller="AlbumsCtrl" ng-show="getCurView()">
           <h3>Albums</h3>
           <div class="row">
             <div class="col-xs-4" ng-repeat="album in albums">
-              <a class="thumbnail" href="#">
+              <a class="thumbnail" href="#" ng-click="goToAlbum(album)">
                 <img ng-src="{{ album.imageUrl }}">
                 <div class="caption">
                   <h5>

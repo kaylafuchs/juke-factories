@@ -13,8 +13,12 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFac
   //   })
   //   .catch($log.error)
 
+  $rootScope.$on("anAlbum", function(anAlbum,payload){
+     $scope.gotoId(payload);
+  })
 
-  AlbumFactory.fetchById(1)
+  $scope.gotoId = function(anId) {
+    AlbumFactory.fetchById(anId)
     .then(function(res) {
       return res.data;
     })
@@ -31,11 +35,7 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFac
       $scope.album.duration = formatTime(totalTime);
     })
     .catch($log.error);
-
-
-
-
-
+  } 
 
   // main toggle
   $scope.toggle = function (song, trackList) {
@@ -67,6 +67,10 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFac
 
   $scope.previousSong = function(){
     PlayerFactory.previous();
+  }
+
+  $scope.getCurView = function(){
+    return typeof AlbumFactory.curView() === "number";
   }
 
   // // incoming events (from Player, toggle, or skip)

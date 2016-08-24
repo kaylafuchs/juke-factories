@@ -21,6 +21,13 @@ juke.controller('AlbumsCtrl', function ($scope, $http, $rootScope, $log, StatsFa
     })
     .catch($log.error)
 
+    $scope.getCurView = function(){
+      return AlbumFactory.curView() === 'all';
+    }
+
+    $scope.goToAlbum = function(album){
+      AlbumFactory.viewOne(album);  
+    }
 
   // AlbumFactory.fetchById(1)
   //   .then(function(res) {
