@@ -1,15 +1,37 @@
 'use strict';
 
 juke.factory('PlayerFactory', function(){
-	var currentSong;
+	var audio = document.createElement('audio');
+	audio.addEventListener('ended', function() {
+		tools.next();
+		$rootScope.$evalAsync();
+	})
+	var currentSong = null;
 	var playing = false;
+	var list = [];
+
+	function edgeCase(myPos, anInterval) {
+		var nextPos;
+		if(myPos + anInterval >= list.length) {
+			nextPos = 0;
+		} else {
+			if(myPos + anInterval < 0) {
+				nextPos = list.length - 1;
+			} else {
+				return myPos + anInterval;
+			}
+		}
+		return nextPos;
+	}
 
 	function skip(interval) {
-		if(!currentSong) return;
+		if (!currentSong) return;
 		var index = currentSong.albumIndex;
-		index = mod( (index + (interval || 1)), album.songs.length );
-		currentSong = album.songs[index];
-		if(playing) play(currentSong);
+		index = edgeCase(index, interval);
+		console.log(index);
+		console.log(list);
+		currentSong = list[index];
+		if (playing) tools.start(currentSong);
 	}
 
 	var tools = {
@@ -17,12 +39,27 @@ juke.factory('PlayerFactory', function(){
 			audio.pause();
 			playing = false;
 		},
-		start: function(content) {
+		start: function(content, songList) {
+			if (songList){
+				songList.forEach(function(song, index){
+					song.albumIndex = index;
+					list.push(song);
+				})
+			} else {
+				if(list.indexOf(content) === -1) {
+					content.albumIndex = 0;
+					list = [];
+					list.push(content);
+				}
+			}
+			this.pause();
 			audio.src = content.audioUrl;
+			currentSong = content;
+			playing = true;
 			audio.load();
 			audio.play();
 		},
-		resume: function(song) {
+		resume: function() {
 			playing = true;
 			audio.play();
 		},
@@ -38,8 +75,8 @@ juke.factory('PlayerFactory', function(){
 		previous: function() {
 			skip(-1);
 		},
-		getProgress: function(decimal) {
-			return audio.duration * decimal;
+		getProgress: function() {
+			return audio.duration ? audio.currentTime / audio.duration : 0;
 		}
 	}
 
