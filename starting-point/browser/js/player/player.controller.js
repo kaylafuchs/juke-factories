@@ -1,7 +1,7 @@
 /* global juke */
 'use strict';
 
-juke.controller('PlayerCtrl', function ($scope, $rootScope) {
+juke.controller('PlayerCtrl', function ($scope, $rootScope, PlayerFactory) {
 
   // initialize audio player (note this kind of DOM stuff is odd for Angular)
   var audio = document.createElement('audio');
